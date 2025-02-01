@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Signup Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #0a0a2e, #000066, #0066cc);
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 400px;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form h2 {
+            color: #0066cc;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        .inputBox {
+            position: relative;
+            width: 100%;
+        }
+
+        .inputBox input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+            font-size: 1em;
+            transition: 0.3s;
+        }
+
+        .inputBox input:focus,
+        .inputBox input:valid {
+            border-color: #0066cc;
+        }
+
+        .inputBox label {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .inputBox input:focus ~ label,
+        .inputBox input:valid ~ label {
+            top: -10px;
+            left: 5px;
+            font-size: 0.8em;
+            background: white;
+            padding: 0 5px;
+            color: #0066cc;
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .switch-form a {
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .switch-form a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            padding: 15px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #004499;
+        }
+
+        .error-message {
+            color: white;
+            background: #ff4444;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Form -->
+        <form class="form" id="loginForm">
+            <h2>Login</h2>
+            <div class="error-message" id="loginErrorMessage">Invalid credentials!</div>
+            <div class="inputBox">
+                <input type="text" id="loginUsername" required>
+                <label>Username</label>
+            </div>
+            <div class="inputBox">
+                <input type="password" id="loginPassword" required>
+                <label>Password</label>
+            </div>
+            <button type="submit">Login</button>
+            <div class="switch-form">
+                Don't have an account? <a href="#" onclick="showSignup()">Sign Up</a>
+            </div>
+        </form>
+
+        <!-- Signup Form -->
+        <form class="form hidden" id="signupForm">
+            <h2>Sign Up</h2>
+            <div class="inputBox">
+                <input type="text" id="signupUsername" required>
+                <label>Username</label>
+            </div>
+            <div class="inputBox">
+                <input type="password" id="signupPassword" required>
+                <label>Password</label>
+            </div>
+            <button type="submit">Sign Up</button>
+            <div class="switch-form">
+                Already have an account? <a href="#" onclick="showLogin()">Login</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Show signup form
+        function showSignup() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('signupForm').classList.remove('hidden');
+        }
+
+        // Show login form
+        function showLogin() {
+            document.getElementById('signupForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+        }
+
+        // Handle signup form submission
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('signupUsername').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            // Save to localStorage
+            localStorage.setItem('username', username);
+            localStorage.setItem('password', password);
+            
+            alert('Signup successful! Please login.');
+            showLogin();
+        });
+
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Get stored credentials
+            const storedUser = localStorage.getItem('username');
+            const storedPass = localStorage.getItem('password');
+            
+            const errorMessage = document.getElementById('loginErrorMessage');
+            
+            if(username === storedUser && password === storedPass) {
+                // Successful login - redirect to flipkart.com
+                window.location.href = 'https://www.flipkart.com';
+            } else {
+                // Show error message
+                errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
